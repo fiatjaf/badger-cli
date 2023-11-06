@@ -13,7 +13,7 @@ func bytesToString(buf []byte) string {
 			readableCharacters++
 		}
 	}
-	if readableCharacters > n/2 {
+	if readableCharacters > n*2/3 {
 		return string(buf)
 	}
 	return "0x" + hex.EncodeToString(buf)
