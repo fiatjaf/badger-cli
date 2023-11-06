@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/bah2830/badger-cli/pkg/badger"
+	"github.com/bah2830/badger-cli/badger"
 	"github.com/spf13/cobra"
 )
 
