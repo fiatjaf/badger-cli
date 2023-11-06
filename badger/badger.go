@@ -87,7 +87,7 @@ func (db *DB) List(prefix string, limit, offset int) ([]ListResult, int, error) 
 				keys = append(
 					keys,
 					ListResult{
-						Key:     string(item.KeyCopy(nil)),
+						Key:     bytesToString(item.KeyCopy(nil)),
 						Size:    item.EstimatedSize(),
 						Version: item.Version(),
 						Meta:    item.UserMeta(),
