@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/bah2830/badger-cli/badger"
+	"github.com/fiatjaf/badger-cli/badger"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/bah2830/badger-cli/badger"
+	"github.com/fiatjaf/badger-cli/badger"
 	"github.com/spf13/cobra"
 )
 

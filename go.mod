@@ -1,4 +1,4 @@
-module github.com/bah2830/badger-cli
+module github.com/fiatjaf/badger-cli
 
 go 1.21
 
