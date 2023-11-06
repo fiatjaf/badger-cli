@@ -2,6 +2,7 @@ package badger
 
 import (
 	"encoding/hex"
+	"strings"
 )
 
 func bytesToString(buf []byte) string {
@@ -16,4 +17,15 @@ func bytesToString(buf []byte) string {
 		return string(buf)
 	}
 	return "0x" + hex.EncodeToString(buf)
+}
+
+func stringToBytes(str string) []byte {
+	if strings.HasPrefix(str, "0x") {
+		b, err := hex.DecodeString(str[2:])
+		if err == nil {
+			return b
+		}
+	}
+
+	return []byte(str)
 }

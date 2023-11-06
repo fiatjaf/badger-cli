@@ -37,7 +37,7 @@ func (db *DB) Get(keys ...string) ([]string, error) {
 	var values []string
 	err := db.View(func(txn *badger.Txn) error {
 		for _, k := range keys {
-			item, err := txn.Get([]byte(k))
+			item, err := txn.Get(stringToBytes(k))
 			if err != nil {
 				if err == badger.ErrKeyNotFound {
 					return fmt.Errorf("Key %s not found", k)
@@ -49,7 +49,7 @@ func (db *DB) Get(keys ...string) ([]string, error) {
 			if err != nil {
 				return err
 			}
-			values = append(values, string(value))
+			values = append(values, bytesToString(value))
 		}
 
 		return nil
@@ -69,13 +69,13 @@ func (db *DB) List(prefix string, limit, offset int) ([]ListResult, int, error) 
 			opts.PrefetchSize = limit
 		}
 		if prefix != "" {
-			opts.Prefix = []byte(prefix)
+			opts.Prefix = stringToBytes(prefix)
 		}
 		it := txn.NewIterator(opts)
 		defer it.Close()
 
 		currentOffset := 0
-		for it.Rewind(); it.ValidForPrefix([]byte(prefix)); it.Next() {
+		for it.Rewind(); it.ValidForPrefix(stringToBytes(prefix)); it.Next() {
 			total++
 			currentOffset++
 			if currentOffset < offset {
@@ -105,10 +105,10 @@ func (db *DB) List(prefix string, limit, offset int) ([]ListResult, int, error) 
 func (db *DB) Set(key, value string, opts *EntryOptions) error {
 	return db.Update(func(txn *badger.Txn) error {
 		if opts == nil {
-			return txn.Set([]byte(key), []byte(value))
+			return txn.Set(stringToBytes(key), stringToBytes(value))
 		}
 
-		e := badger.NewEntry([]byte(key), []byte(value))
+		e := badger.NewEntry(stringToBytes(key), stringToBytes(value))
 		if opts.TTL > 0 {
 			e.WithTTL(opts.TTL)
 		}
@@ -119,7 +119,7 @@ func (db *DB) Set(key, value string, opts *EntryOptions) error {
 func (db *DB) Delete(keys ...string) error {
 	return db.Update(func(txn *badger.Txn) error {
 		for _, key := range keys {
-			if err := txn.Delete([]byte(key)); err != nil {
+			if err := txn.Delete(stringToBytes(key)); err != nil {
 				return err
 			}
 		}
